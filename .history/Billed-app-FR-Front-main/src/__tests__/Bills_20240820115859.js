@@ -8,6 +8,27 @@ import { bills } from "../fixtures/bills.js"
 import { ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 
+import { screen, waitFor } depuis « @testing-library/dom »;
+import userEvent à partir de « @testing-library/user-event »;
+importer mockStore à partir de ".. /__mocks__/store.js";
+
+importer BillsUI à partir de ".. /vues/BillsUI.js";
+importer  { factures } à partir de ".. /fixtures/bills.js";
+import { ROUTES, ROUTES_PATH } de ".. /constantes/routes.js";
+import { localStorageMock } à partir de ".. /__mocks__/localStorage.js";
+
+importer routeur à partir de ".. /app/Router.js";
+importer des factures de ".. /conteneurs/Bills.js";
+
+plaisanterie.mock(".. /app/store", () => mockStore);
+
+describe(« Quand je suis sur la page des factures mais qu’elle est en cours de chargement », () => {
+  test(« Ensuite, la page de chargement doit être rendue », () => {
+    document.corps.innerHTML = BillsUI({ loading : true });
+    expect(screen.getAllByText(« Chargement... »)).toBeTruthy();
+  });
+});
+describe(« Étant donné que je suis lié en tant qu’employé », () => {
 
 
 import router from "../app/Router.js";

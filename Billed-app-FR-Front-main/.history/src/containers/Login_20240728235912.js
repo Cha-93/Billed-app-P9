@@ -15,8 +15,6 @@ export default class Login {
     const formAdmin = this.document.querySelector(`form[data-testid="form-admin"]`)
     formAdmin.addEventListener("submit", this.handleSubmitAdmin)
   }
-
-  //Modification test login :
   
   handleSubmitEmployee = e => {
     e.preventDefault()
@@ -46,7 +44,6 @@ export default class Login {
 
   }
 
-
   handleSubmitAdmin = e => {
     e.preventDefault()
     const emailInput = e.target.querySelector(`input[data-testid="admin-email-input"]`)
@@ -74,10 +71,6 @@ export default class Login {
       })
   }
 
-
-  //fin de modification 
-
-  
   // not need to cover this function by tests
   login = (user) => {
     if (this.store) {

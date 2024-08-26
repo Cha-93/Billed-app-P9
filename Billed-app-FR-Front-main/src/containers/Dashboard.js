@@ -72,10 +72,34 @@ export default class {
     this.document = document
     this.onNavigate = onNavigate
     this.store = store
+    this.toggleState = {
+      1: false,
+      2: false,
+      3: false
+    };
     $('#arrow-icon1').click((e) => this.handleShowTickets(e, bills, 1))
     $('#arrow-icon2').click((e) => this.handleShowTickets(e, bills, 2))
     $('#arrow-icon3').click((e) => this.handleShowTickets(e, bills, 3))
     new Logout({ localStorage, onNavigate })
+  }
+
+  updateState(index) {
+    this.toggleState[index] = !this.toggleState[index]
+  }
+
+  updateBillsContainer(bills, index) {
+    const arrowIcon = $(`#arrow-icon${index}`)
+    const satusBillsContainer = $(`#status-bills-container${index}`)
+
+    this.updateState(index)
+
+    if (this.toggleState[index]) {
+      arrowIcon.css({ transform: 'rotate(0deg)'})
+      satusBillsContainer.html(cards(filteredBills(bills, getStatus(index))))
+      return
+    }
+    arrowIcon.css({ transform: 'rotate(90deg)'})
+    satusBillsContainer.html("")
   }
 
   handleClickIconEye = () => {
@@ -131,27 +155,19 @@ export default class {
   }
 
   handleShowTickets(e, bills, index) {
-    if (this.counter === undefined || this.index !== index) this.counter = 0
-    if (this.index === undefined || this.index !== index) this.index = index
-    if (this.counter % 2 === 0) {
-      $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
-      $(`#status-bills-container${this.index}`)
-        .html(cards(filteredBills(bills, getStatus(this.index))))
-      this.counter ++
-    } else {
-      $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
-      $(`#status-bills-container${this.index}`)
-        .html("")
-      this.counter ++
-    }
-
-    bills.forEach(bill => {
-      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
-    })
-
-    return bills
-
+    this.updateBillsContainer(bills, index);
+  
+    bills.forEach((bill) => {
+      const billSelector = `#open-bill${bill.id}`;
+      const element = $(billSelector);
+  
+      element.off("click").on("click", (event) => {
+        this.handleEditTicket(event, bill, bills);
+      });
+    });
   }
+  
+
 
   getBillsAllUsers = () => {
     if (this.store) {
